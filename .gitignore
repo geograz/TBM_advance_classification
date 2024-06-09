@@ -1,0 +1,3 @@
+# too large numpy files (>100 MB) to be ignored
+data/BBT_synth_pene_adv_force_torque_1024.npy
+data/UT_synth_pene_adv_force_torque_1024.npy

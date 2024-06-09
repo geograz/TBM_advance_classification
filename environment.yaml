@@ -1,0 +1,15 @@
+name: TBM_data
+channels:
+- conda-forge
+- defaults
+dependencies:
+- python=3.12
+- matplotlib
+- numpy
+- pandas
+- pip
+- spyder-kernels=2.4
+- tqdm
+- pip:
+  - pyarrow
+  - openpyxl
