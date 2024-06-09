@@ -36,7 +36,7 @@ def torque_ratio(advance_force: pd.Series,  # cutterhead advance force [kN]
 # fixed values and variables
 ######################################
 
-SAMPLE = 'BBT'
+SAMPLE = 'Ulriken'  # 'BBT' 'Ulriken'
 STROKE_LENGTH = 1.8  # [m] length of one stroke of the TBM
 
 ######################################
@@ -44,9 +44,10 @@ STROKE_LENGTH = 1.8  # [m] length of one stroke of the TBM
 ######################################
 
 
+# dataset specific metadata dictionaries
 match SAMPLE:  # noqa
     case 'Ulriken':
-        param_dict = {'filename': 'UT_synth_pene_adv_force_torque_1024.npy',
+        param_dict = {'filename': 'UT_synth_pene_adv_force_torque_1024',
                       'plotname': 'sample_Ulriken.png',
                       'idx': 230,  # data index to load
                       'dp spacing': 0.03,  # [m] data point spacing
@@ -56,7 +57,7 @@ match SAMPLE:  # noqa
                       'M0': 400  # [kNm]
                       }
     case 'BBT':
-        param_dict = {'filename': 'BBT_synth_pene_adv_force_torque_1024.npy',
+        param_dict = {'filename': 'BBT_synth_pene_adv_force_torque_1024',
                       'plotname': 'sample_BBT.png',
                       'idx': 4,  # data index to load
                       'dp spacing': 0.05,  # [m] data point spacing
@@ -68,7 +69,8 @@ match SAMPLE:  # noqa
 
 
 # load one dataset from numpy array
-data = np.load(param_dict['filename'])
+fname = param_dict['filename']
+data = np.load(f'../data/{fname}.npy')
 sample_penetration = data[:, 0, :][param_dict['idx']].flatten()
 sample_tot_adv_force = data[:, 1, :][param_dict['idx']].flatten()
 sample_torque = data[:, 2, :][param_dict['idx']].flatten()
@@ -76,10 +78,12 @@ n_dp = len(sample_penetration)
 
 
 # create pandas dataframe with TBM operational data
-df = pd.DataFrame({'tunnellength [m]': np.arange(n_dp)*param_dict['dp spacing'],
-                   'penetration [mm/rev]': sample_penetration,
-                   'total advance force [kN]': sample_tot_adv_force,
-                   'torque [kNm]': sample_torque*1000})
+df = pd.DataFrame(
+    {'tunnellength [m]': np.arange(n_dp)*param_dict['dp spacing'],
+     'penetration [mm/rev]': sample_penetration,
+     'total advance force [kN]': sample_tot_adv_force,
+     'torque [kNm]': sample_torque*1000})
+
 # generate stroke numbers
 df['Stroke number [-]'] = (df['tunnellength [m]'] / STROKE_LENGTH).astype(int)
 # get stroke wise averages
@@ -95,11 +99,18 @@ df_strokes['tunnellength stroke middle [m]'] = stroke_starts + STROKE_LENGTH/2
 df['theo. cutterhead torque [kNm]'], df['torque ratio [-]'] = torque_ratio(
     df['total advance force [kN]'], param_dict['n cutters'],
     param_dict['cutter radius'], df['penetration [mm/rev]'],
-    param_dict['cutterhead diameter'], param_dict['M0'], df['torque [kNm]'])
+    param_dict['cutterhead diameter'], param_dict['M0'],
+    df['torque [kNm]'])
 df_strokes['theo. cutterhead torque [kNm]'], df_strokes['torque ratio [-]'] = torque_ratio(
     df_strokes['total advance force [kN]'], param_dict['n cutters'],
     param_dict['cutter radius'], df_strokes['penetration [mm/rev]'],
-    param_dict['cutterhead diameter'], param_dict['M0'], df_strokes['torque [kNm]'])
+    param_dict['cutterhead diameter'], param_dict['M0'],
+    df_strokes['torque [kNm]'])
+
+# save data to excel with multiple sheets
+with pd.ExcelWriter(f'../data/{fname}.xlsx') as writer:
+    df.to_excel(writer, sheet_name='raw_data', index=False)
+    df_strokes.to_excel(writer, sheet_name='stroke_average', index=False)
 
 print(np.mean(df['torque ratio [-]']))
 ######################################

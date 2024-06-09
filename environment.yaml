@@ -8,7 +8,7 @@ dependencies:
 - numpy
 - pandas
 - pip
-- spyder-kernels=2.4
+- spyder-kernels=2.5
 - tqdm
 - pip:
   - pyarrow
