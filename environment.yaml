@@ -8,6 +8,8 @@ dependencies:
 - numpy
 - pandas
 - pip
+- pytorch
+- scikit-learn
 - spyder-kernels=2.5
 - tqdm
 - pip:
