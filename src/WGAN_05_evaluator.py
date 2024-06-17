@@ -16,21 +16,21 @@ from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-tunnel = 'BBT' # BBT, FB, GKI
+tunnel = 'TBM_B' # TBM_A
 FEATURE_NAME1 = 'pene'
 FEATURE_NAME2 = 'adv_force'
 FEATURE_NAME3 = 'torque'
 FEATURE_NAME4 = 'ucs'
 features = [FEATURE_NAME1, FEATURE_NAME2, FEATURE_NAME3, FEATURE_NAME4]
 
-filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/BBT_2024-06-13_15-07-47_bs32_gen426_pene_adv_force_torque_ucs_4096'
-# filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/UT_2024-06-13_15-27-09_bs32_gen301_pene_adv_force_torque_ucs_4096'
-# filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/FB_2024-06-13_14-07-27_bs32_gen226__pene_adv_force_torque_ucs_4096'
+# filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/TBM_A_2024-06-13_15-07-47_bs32_gen426_pene_adv_force_torque_ucs_4096'
+# filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/TBM_C_2024-06-13_15-27-09_bs32_gen301_pene_adv_force_torque_ucs_4096'
+filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/TBM_B_2024-06-13_14-07-27_bs32_gen226__pene_adv_force_torque_ucs_4096'
 
 look_back = 4096 #1024
-N_PASSES = 2500
+N_PASSES = 250
 run = 1
-machine = None
+machine = 'S980'
 
 # =============================================================================
 # load data
@@ -241,13 +241,13 @@ real_data_torque_inv, synth_data_torque_inv = inverse_scale(
 real_data_ucs_inv, synth_data_ucs_inv = inverse_scale(
     real_ucs_reshaped, synth_ucs_reshaped, features[3])
 
-real_df = pd.DataFrame({'Tunnel Distance [m]':np.arange(0, 512000, 0.05).astype(float),
+real_df = pd.DataFrame({'Tunnel Distance [m]':np.arange(0, 51200, 0.05).astype(float),
                         'Penetration [mm/rot]':np.round(real_data_pene_inv.squeeze().astype(float), 3),
                         'Total advance force [kN]':np.round(real_data_adv_force_inv.squeeze().astype(float), 3),
                         'Torque cutterhead [MNm]':np.round(real_data_torque_inv.squeeze().astype(float), 3),
                         'UCS [MPa]':np.round(real_data_ucs_inv.squeeze().astype(float), 3)})
 
-synth_df = pd.DataFrame({'Tunnel Distance [m]':np.arange(0, 512000, 0.05).astype(float),
+synth_df = pd.DataFrame({'Tunnel Distance [m]':np.arange(0, 51200, 0.05).astype(float),
                         'Penetration [mm/rot]':np.round(synth_data_pene_inv.squeeze().astype(float), 2),
                         'Total advance force [kN]':np.round(synth_data_adv_force_inv.squeeze().astype(float), 2),
                         'Torque cutterhead [MNm]':np.round(synth_data_torque_inv.squeeze().astype(float), 2),

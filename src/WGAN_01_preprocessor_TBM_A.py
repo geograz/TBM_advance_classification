@@ -4,7 +4,7 @@ Created on Thu Jun 13 2024
 
 @author: Paul Unterlass
 
-Preprocessing functions for the Ulriken Tunnel TBM dataset
+Preprocessing functions for the TBM_A dataset
 """
 
 import numpy as np
@@ -20,18 +20,18 @@ utils = utilities()
 
 def concat():
     # import raw data and concat individual excel files to big parquet file/csv
-    folder = (r'00_data\01_raw\02_UT')
+    folder = (r'00_data\01_raw\01_TBM_A')
     
     drop_standstills = True  # change to true if standstills should be dropped
     check_for_miss_vals = False  # generates plot of missing values in dataset
     
-    df, files = utils.concat_tables_UT(folder, drop_standstills=drop_standstills,
+    df, files = utils.concat_tables_TBM_A(folder, drop_standstills=drop_standstills,
                              check_for_miss_vals=check_for_miss_vals)
 
     if drop_standstills is False:
-        df.to_parquet(r'00_data\02_combined\UT_TBMdata_wStandstills.gzip', index=False)
+        df.to_parquet(r'00_data\02_combined\TBM_A_TBMdata_wStandstills.gzip', index=False)
     else:
-        df.to_parquet(r'00_data\02_combined\UT_TBMdata.gzip', index=False)
+        df.to_parquet(r'00_data\02_combined\TBM_A_TBMdata.gzip', index=False)
     
     return df
 
@@ -42,34 +42,26 @@ df = concat()
 # =============================================================================
 
 # import pandas as pd
-# df = pd.read_parquet(r'00_data\02_combined\UT_TBMdata.gzip')
+# df = pd.read_parquet(r'00_data\02_combined\TBM_A_TBMdata.gzip')
 
 def preprocessor(df):
-    print('\n# datapoints', df['Tunnel Distance [m]'].count())
-    
-    df = df.loc[:,['Chainage [m]', 'Tunnel Distance [m]',
-                   'Date','Advance speed [mm/min]',
-                   'Pressure advance cylinder bottom side [bar]',
-                   'Penetration [mm/rot]', 'Specific energy []',
-                   'Speed cutterhead for display [rpm]', 
-                   'Torque cutterhead [MNm]', 'Total advance force [kN]']]
-    
-    df = df[(df['Tunnel Distance [m]'] >=0 | (df['Tunnel Distance [m]'].isnull()))]
-    df_median = df.groupby('Tunnel Distance [m]', as_index = False).median()
-    print('\n# datapoints after grouping by Tunnel Distance', df_median['Tunnel Distance [m]'].count())
+    df = df.groupby('Tunnel Distance [m]', as_index = False).median()
+    print('\n# datapoints after grouping by Tunnel Distance',
+          df['Tunnel Distance [m]'].count())
+    df = df.sort_values(by=['Tunnel Distance [m]'])
     ###########################################################################
     # linear interpolation
     # difference in Tunnel Distance between single data points
-    interval = df_median['Tunnel Distance [m]'].diff().median()
+    interval = df['Tunnel Distance [m]'].diff().median()
     interval = round(interval, 2)
-    df_equal = utils.equally_spaced_df(df_median, 'Tunnel Distance [m]', interval)
+    df_equal = utils.equally_spaced_df(df, 'Tunnel Distance [m]', interval)
     print('# datapoints after linear interp.',
           df_equal['Tunnel Distance [m]'].count())
 
     df = df_equal
     df['Tunnel Distance [m] round'] = np.round(df['Tunnel Distance [m]'], 2)
     df.set_index('Tunnel Distance [m] round', inplace=True, drop=False)
-    df = df.drop(['Chainage [m]', 'Tunnel Distance [m] round'], axis=1)
+    df = df.drop(['Chainage [m]', 'Tunnel Distance [m] round'], axis=1)    
     ###########################################################################
     # drop penetration <0.1 otherwise you will get unrealistic UCS values
     df.drop(df[df['Penetration [mm/rot]'] < 0.1].index, inplace=True)
@@ -81,9 +73,9 @@ def preprocessor(df):
     # prepare data for GAN
     df = df[1000:] # drop rows up to TM 1000
     df = df.dropna()
-    look_back = 245.76  # results in a vector length of 8192
-    look_back = int(look_back / interval) # 245.76/0.03 = 8192
-
+    look_back = 409.6 # results in a vector length of 8192
+    look_back = int(look_back / interval) # 409.6/0.05 = 8192
+ 
     # scale data for training purposes
     def scale(feature, look_back):
         data = df[feature].values
@@ -107,19 +99,18 @@ def preprocessor(df):
     data_adv_force, scaler_adv_force = scale('Total advance force [kN]', look_back)
     data_torque, scaler_torque = scale('Torque cutterhead [MNm]', look_back)
     data_ucs, scaler_ucs = scale('UCS [MPa]', look_back)
-
         
     train_data = np.stack((data_pene, data_adv_force, data_torque, data_ucs), axis=1)
     print(train_data.shape)
     
     # save training data and scalers for later rescaling
-    np.save(fr'00_data\03_train\UT\UT_train_X_pene_adv_force_torque_ucs_{look_back}.npy', train_data)
-    dump(scaler_pene, open(fr'00_data\03_train\UT\UT_scaler_pene_{look_back}.pkl', 'wb'))
-    dump(scaler_adv_force, open(fr'00_data\03_train\UT\UT_scaler_adv_force_{look_back}.pkl', 'wb'))
-    dump(scaler_torque, open(fr'00_data\03_train\UT\UT_scaler_torque_{look_back}.pkl', 'wb'))
-    dump(scaler_ucs, open(fr'00_data\03_train\UT\UT_scaler_ucs_{look_back}.pkl', 'wb'))
+    np.save(fr'00_data\03_train\TBM_A\TBM_A_train_X_pene_adv_force_torque_ucs_{look_back}.npy', train_data)
+    dump(scaler_pene, open(fr'00_data\03_train\TBM_A\TBM_A_scaler_pene_{look_back}.pkl', 'wb'))
+    dump(scaler_adv_force, open(fr'00_data\03_train\TBM_A\TBM_A_scaler_adv_force_{look_back}.pkl', 'wb'))
+    dump(scaler_torque, open(fr'00_data\03_train\TBM_A\TBM_A_scaler_torque_{look_back}.pkl', 'wb'))
+    dump(scaler_ucs, open(fr'00_data\03_train\TBM_A\TBM_A_scaler_ucs_{look_back}.pkl', 'wb'))
     
     return df, scaler_pene, scaler_adv_force, scaler_torque, scaler_ucs
 
 
-df_UT, UT_scaler_pene, UT_scaler_adv_force, UT_scaler_torque, UT_scaler_ucs = preprocessor(df)
+df, scaler_pene, scaler_adv_force, scaler_torque, scaler_ucs = preprocessor(df)

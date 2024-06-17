@@ -4,7 +4,7 @@ Created on Thu Jun 13 2024
 
 @author: Paul Unterlass
 
-Preprocessing functions for the Follobanen TBM dataset
+Preprocessing functions for the TBM_B dataset
 """
 
 import numpy as np
@@ -21,12 +21,12 @@ utils = utilities()
 def concat():
     # import raw data and concat individual excel files to big parquet file/csv
     machine = 'S980'
-    folder = fr'00_data\01_raw\04_FB\{machine}_TBM_Data'
+    folder = fr'00_data\01_raw\04_TBM_B\{machine}_TBM_Data'
     
     drop_standstills = True  # change to true if standstills should be dropped
     check_for_miss_vals = False  # generates plot of missing values in dataset
     
-    df = utils.concat_tables_FB(folder, drop_standstills=drop_standstills,
+    df = utils.concat_tables_TBM_B(folder, drop_standstills=drop_standstills,
                                 check_for_miss_vals=check_for_miss_vals)
     
     print('\ndataset start - stop:', df['Tunnel Distance [m]'].min(), '-', df['Tunnel Distance [m]'].max())
@@ -34,9 +34,9 @@ def concat():
     
     
     if drop_standstills is False:
-        df.to_parquet(fr'00_data\02_combined\FB_TBMdata_wStandstills_{machine}.gzip', index=False)
+        df.to_parquet(fr'00_data\02_combined\TBM_B_TBMdata_wStandstills_{machine}.gzip', index=False)
     else:
-        df.to_parquet(fr'00_data\02_combined\FB_TBMdata_{machine}.gzip', index=False)
+        df.to_parquet(fr'00_data\02_combined\TBM_B_TBMdata_{machine}.gzip', index=False)
     
     return df, machine
 
@@ -47,7 +47,7 @@ df, machine = concat()
 # =============================================================================
 
 # import pandas as pd
-# df = pd.read_parquet(fr'00_data\02_combined\FB_TBMdata_{machine}.gzip')
+# df = pd.read_parquet(fr'00_data\02_combined\TBM_B_TBMdata_{machine}.gzip')
 
 def preprocessor(df, machine):
     print('\n# datapoints', df['Tunnel Distance [m]'].count())
@@ -127,13 +127,13 @@ def preprocessor(df, machine):
     print(train_data.shape)
     
     # save training data and scalers for later rescaling
-    np.save(fr'00_data\03_train\FB\FB_train_X_pene_adv_force_torque_ucs_{look_back}_{machine}.npy', train_data)
-    dump(scaler_pene, open(fr'00_data\03_train\FB\FB_{machine}_scaler_pene_{look_back}.pkl', 'wb'))
-    dump(scaler_adv_force, open(fr'00_data\03_train\FB\FB_{machine}_scaler_adv_force_{look_back}.pkl', 'wb'))
-    dump(scaler_torque, open(fr'00_data\03_train\FB\FB_{machine}_scaler_torque_{look_back}.pkl', 'wb'))
-    dump(scaler_ucs, open(fr'00_data\03_train\FB\FB_{machine}_scaler_ucs_{look_back}.pkl', 'wb'))
+    np.save(fr'00_data\03_train\TBM_B\TBM_B_train_X_pene_adv_force_torque_ucs_{look_back}_{machine}.npy', train_data)
+    dump(scaler_pene, open(fr'00_data\03_train\TBM_B\TBM_B_{machine}_scaler_pene_{look_back}.pkl', 'wb'))
+    dump(scaler_adv_force, open(fr'00_data\03_train\TBM_B\TBM_B_{machine}_scaler_adv_force_{look_back}.pkl', 'wb'))
+    dump(scaler_torque, open(fr'00_data\03_train\TBM_B\TBM_B_{machine}_scaler_torque_{look_back}.pkl', 'wb'))
+    dump(scaler_ucs, open(fr'00_data\03_train\TBM_B\TBM_B_{machine}_scaler_ucs_{look_back}.pkl', 'wb'))
     
     return df, scaler_pene, scaler_adv_force, scaler_torque, scaler_ucs
 
 
-df_FB, FB_scaler_pene, FB_scaler_adv_force, FB_scaler_torque, FB_scaler_ucs = preprocessor(df, machine)
+df_TBM_B, TBM_B_scaler_pene, TBM_B_scaler_adv_force, TBM_B_scaler_torque, TBM_B_scaler_ucs = preprocessor(df, machine)

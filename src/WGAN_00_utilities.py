@@ -38,7 +38,7 @@ class utilities:
 
         return df_interp
 
-    def concat_tables_BBT(self, folder, drop_standstills=True,
+    def concat_tables_TBM_A(self, folder, drop_standstills=True,
                           check_for_miss_vals=True):
 
         filenames = []
@@ -88,7 +88,7 @@ class utilities:
         
         return df, files
 
-    def concat_tables_UT(self, folder, drop_standstills=True,
+    def concat_tables_TBM_C(self, folder, drop_standstills=True,
                       check_for_miss_vals=True):
 
         filenames = []
@@ -135,7 +135,7 @@ class utilities:
 
         return df, files
     
-    def concat_tables_FB(self, folder, drop_standstills=True,
+    def concat_tables_TBM_B(self, folder, drop_standstills=True,
                          check_for_miss_vals=True):
 
         filenames = []

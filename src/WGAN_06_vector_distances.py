@@ -13,7 +13,7 @@ import pandas as pd
 
 N_VECTORS = 2500 # number of vectors of generated data
 VECTOR_LENGTH = 4096  # length of each vector
-tunnel = 'UT'
+tunnel = 'TBM_A'
 FEATURE_NAME1 = 'pene'
 FEATURE_NAME2 = 'adv_force'
 FEATURE_NAME3 = 'torque'
@@ -24,9 +24,9 @@ look_back = 4096
 N_PASSES = 2500
 run = 1
 
-filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/BBT_2024-06-13_15-07-47_bs32_gen426_pene_adv_force_torque_ucs_4096'
-# filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/UT_2024-06-13_15-27-09_bs32_gen301_pene_adv_force_torque_ucs_4096'
-# filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/FB_2024-06-13_14-07-27_bs32_gen226__pene_adv_force_torque_ucs_4096'
+filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/TBM_A_2024-06-13_15-07-47_bs32_gen426_pene_adv_force_torque_ucs_4096'
+# filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/TBM_C_2024-06-13_15-27-09_bs32_gen301_pene_adv_force_torque_ucs_4096'
+# filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/TBM_B_2024-06-13_14-07-27_bs32_gen226__pene_adv_force_torque_ucs_4096'
 
 # =============================================================================
 # import data

@@ -39,7 +39,7 @@ FEATURES_GEN = 64
 CRITIC_ITERATIONS = 3 # for every 3 update steps in critic, one update step in generator
 WEIGHT_CLIP = 0.01
 
-tunnel = 'UT'
+tunnel = 'TBM_A'
 FEATURE_NAME1 = 'pene'
 FEATURE_NAME2 = 'adv_force'
 FEATURE_NAME3 = 'torque'
