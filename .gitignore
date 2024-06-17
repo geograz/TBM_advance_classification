@@ -1,3 +1,6 @@
+src/__pycache__
+
 # too large numpy files (>100 MB) to be ignored
-data/BBT_synth_pene_adv_force_torque_1024.npy
-data/UT_synth_pene_adv_force_torque_1024.npy
+data/synth_df_BBT_4096_mod.csv
+data/synth_df_FB_4096_mod.csv
+data/synth_df_UT_4096_mod.csv
