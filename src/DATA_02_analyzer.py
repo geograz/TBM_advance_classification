@@ -16,7 +16,7 @@ from DATA_XX_library import utilities
 # fixed values and variables
 ######################################
 
-SAMPLE = 'Ulriken'  # 'BBT' 'Ulriken' 'Follo'
+SAMPLE = 'TBM_A'  # 'TBM_A' 'TBM_B' 'TBM_C'
 
 ######################################
 # data import
@@ -27,7 +27,7 @@ utils = utilities(SAMPLE)
 
 # load one dataset
 fname = utils.param_dict['filename']
-df = pd.read_csv(f'../data/{fname}_mod.csv')
+df = pd.read_csv(f'../data/{fname}_mod.zip')
 
 ######################################
 # preprocessing
@@ -62,13 +62,20 @@ for stroke in df_advance.groupby('Stroke number [-]'):
     df_stroke_temp['tunnellength stroke middle [m]'] = df_stroke_temp[['tunnellength stroke start [m]',
                                                                        'tunnellength stroke end [m]']].values.mean()
     df_strokes.append(df_stroke_temp)
-
 df_strokes = pd.concat(df_strokes)
 
-# compute theoretical cutterhead torque & torque ratio for both dfs
+# average datapoints with same tunnellength
+df_advance  = df_advance.drop(
+    'Timestamp', axis=1).groupby('tunnellength [m]', as_index=False).mean()
+
+# compute theoretical cutterhead torque & torque ratio for all dfs
 df['theo. torque [kNm]'], df['torque ratio [-]'] = utils.torque_ratio(
     df['Total advance force [kN]'], df['Penetration [mm/rot]'],
     df['Torque cutterhead [MNm]']*1000)
+
+df_advance['theo. torque [kNm]'], df_advance['torque ratio [-]'] = utils.torque_ratio(
+    df_advance['Total advance force [kN]'], df_advance['Penetration [mm/rot]'],
+    df_advance['Torque cutterhead [MNm]']*1000)
 
 df_strokes['theo. torque [kNm] mean'], df_strokes['torque ratio [-] mean'] = utils.torque_ratio(
     df_strokes['Total advance force [kN] mean'],
@@ -85,39 +92,60 @@ df_strokes.to_excel(f'../data/{fname}_mod.xlsx', index=False)
 # plotting
 ######################################
 
+# scaling of advance force
+df['Total advance force [MN]'] = df['Total advance force [kN]'] / 1000
+df_advance['Total advance force [MN]'] = df_advance['Total advance force [kN]'] / 1000
+df_strokes['Total advance force [MN] mean'] = df_strokes['Total advance force [kN] mean'] / 1000
+df_strokes['Total advance force [MN] median'] = df_strokes['Total advance force [kN] median'] / 1000
 
-fig = plt.figure(figsize=(12, 8))
+for start in np.arange(1000, step=100):
+    fig = plt.figure(figsize=(7.48031, 3.93701))
 
-x1, x2 = 'tunnellength [m]', 'tunnellength stroke middle [m]'
-length = 30
+    x1, x2 = 'tunnellength [m]', 'tunnellength stroke middle [m]'
+    length = 20
+    fontsize = 6
 
-for i, parameter in enumerate(['Penetration [mm/rot]',
-                               'Total advance force [kN]',
-                               'Torque cutterhead [MNm]',
-                               'torque ratio [-]']):
-    df = df[df[x1] < length]
-    df_strokes = df_strokes[df_strokes[x2] < length]
+    for i, parameter in enumerate(['Penetration [mm/rot]',
+                                   'Total advance force [MN]',
+                                   'Torque cutterhead [MNm]',
+                                   'torque ratio [-]']):
+        df_ = df[(df[x1] >= start) & (df[x1] < start+length)]
+        df_advance_ = df_advance[(df_advance[x1] >= start) &
+                                 (df_advance[x1] < start+length)]
+        df_strokes_ = df_strokes[(df_strokes[x2] >= start) &
+                                 (df_strokes[x2] < start+length)]
 
-    ax = fig.add_subplot(4, 1, i+1)
-    ax.plot(df[x1], df[parameter], color='grey', label='TBM data', zorder=5)
-    ax.scatter(df_strokes[x2], df_strokes[parameter+' mean'],
-               label='stroke mean', s=60, color='white', marker='o',
-               edgecolor='black', zorder=10)
-    ax.scatter(df_strokes[x2], df_strokes[parameter+' median'],
-               label='stroke median', s=60, color='white', marker='v',
-               edgecolor='black', zorder=10)
+        ax = fig.add_subplot(4, 1, i+1)
+        ax.scatter(df_[x1], df_[parameter], color='grey', label='raw TBM data',
+                   zorder=5, alpha=0.3, s=4)
+        ax.plot(df_advance_[x1], df_advance_[parameter], color='black',
+                label='TBM data cleaned', lw=1, zorder=7)
+        ax.scatter(df_strokes_[x2], df_strokes_[parameter+' mean'],
+                   label='stroke mean', s=30, color='white', marker='o',
+                   edgecolor='black', zorder=10)
+        ax.scatter(df_strokes_[x2], df_strokes_[parameter+' median'],
+                   label='stroke median', s=30, color='white', marker='v',
+                   edgecolor='black', zorder=10)
+        ax.set_xlim(left=start, right=start+length)
+        ax_lims = ax.get_ylim()
+        if parameter == 'torque ratio [-]' and df_[parameter].max() > 1.5:
+            ax_lims = (ax_lims[0], 1.5)
+            ax.set_ylim(top=1.6)
+        ax.vlines(x=df_strokes_['tunnellength stroke start [m]'],
+                  ymin=ax_lims[0], ymax=ax_lims[1], color='black',
+                  label='stroke boundary', zorder=20)
+        ax.set_ylabel(parameter.replace(' [', '\n['), fontsize=fontsize)
+        ax.tick_params(axis='both', labelsize=fontsize)
 
-    ax_lims = ax.get_ylim()
-    ax.vlines(x=df_strokes['tunnellength stroke start [m]'], ymin=ax_lims[0],
-              ymax=ax_lims[1], color='black', label='stroke boundary',
-              zorder=20)
-    ax.set_ylabel(parameter)
-    ax.set_xlim(left=0, right=length)
-    ax.grid(alpha=0.5)
+        if i == 0:
+            ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.3), ncol=5,
+                      fontsize=fontsize)
 
-ax.legend(bbox_to_anchor=(1, 0.5))
-ax.set_xlabel(x1)
+        ax.grid(alpha=0.5)
 
-plt.tight_layout()
-plt.savefig(f"../figures/{utils.param_dict['plotname']}.png")
-plt.close()
+    ax.set_xlabel(x1, fontsize=fontsize)
+
+    plt.tight_layout()
+    plt.savefig(f"../figures/{utils.param_dict['plotname']}_{start}.png",
+                dpi=400)
+    plt.close()

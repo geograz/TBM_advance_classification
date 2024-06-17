@@ -14,39 +14,40 @@ class utilities:
     def __init__(self, SAMPLE):
         # dataset specific metadata dictionaries
         match SAMPLE:  # noqa
-            case 'Ulriken':
-                self.param_dict = {'filename': 'synth_df_UT_4096',
-                                   'plotname': 'sample_Ulriken',
+            case 'TBM_A':
+                self.param_dict = {'filename': 'synth_df_TBM_A_4096',
+                                   'plotname': 'sample_TBM_A',
                                    'n cutters': 50,
                                    'cutter radius': 241.3,  # [mm]
                                    'cutterhead diameter': 8,  # [m]
-                                   'cutterhead rotations': 3.5,  # [rpm]
+                                   'cutterhead rotations': 6,  # [rpm]
+                                   'M0': 180,  # [kNm]
+                                   'stroke length': 1.7,  # [m]
+                                   'frequency': 10  # frequency of datapoint recording [s]
+                                   }
+            case 'TBM_B':
+                self.param_dict = {'filename': 'synth_df_TBM_B_4096',
+                                   'plotname': 'sample_TBM_B',
+                                   'n cutters': 70,
+                                   'cutter radius': 241.3,  # [mm]
+                                   'cutterhead diameter': 10,  # [m]
+                                   'cutterhead rotations': 5,  # [rpm]
                                    'M0': 400,  # [kNm]
                                    'stroke length': 1.7,  # [m]
-                                   'frequency': 5  # frequency of data recording
+                                   'frequency': 1  # frequency of datapoint recording [s]
                                    }
-            case 'BBT':
-                self.param_dict = {'filename': 'synth_df_BBT_4096',
-                                   'plotname': 'sample_BBT',
-                                   'n cutters': 50,
-                                   'cutter radius': 216,  # [mm]
-                                   'cutterhead diameter': 6,  # [m]
-                                   'cutterhead rotations': 3.5,  # [rpm]
-                                   'M0': 300,  # [kNm]
+            case 'TBM_C':
+                self.param_dict = {'filename': 'synth_df_TBM_C_4096',
+                                   'plotname': 'sample_TBM_C',
+                                   'n cutters': 60,
+                                   'cutter radius': 241.3,  # [mm]
+                                   'cutterhead diameter': 9,  # [m]
+                                   'cutterhead rotations': 5,  # [rpm]
+                                   'M0': 220,  # [kNm]
                                    'stroke length': 1.7,  # [m]
-                                   'frequency': 5  # frequency of datapoint recording [s]
+                                   'frequency': 10  # frequency of data recording
                                    }
-            case 'Follo':
-                self.param_dict = {'filename': 'synth_df_FB_4096',
-                                   'plotname': 'sample_Follo',
-                                   'n cutters': 50,
-                                   'cutter radius': 216,  # [mm]
-                                   'cutterhead diameter': 6,  # [m]
-                                   'cutterhead rotations': 3.5,  # [rpm]
-                                   'M0': 400,  # [kNm]
-                                   'stroke length': 1.7,  # [m]
-                                   'frequency': 5  # frequency of datapoint recording [s]
-                                   }
+
 
     def torque_ratio(self,
                      advance_force: pd.Series,  # cutterhead advance force [kN]

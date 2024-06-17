@@ -16,7 +16,7 @@ from DATA_XX_library import utilities
 # fixed values and variables
 ######################################
 
-SAMPLE = 'Follo'  # 'BBT' 'Ulriken' 'Follo'
+SAMPLE = 'TBM_C'  # 'TBM_A' 'TBM_B' 'TBM_C'
 
 ######################################
 # data import
@@ -39,7 +39,7 @@ np.random.seed(123)  # fix random seed for reproducibility
 # backcalculate tunnel distance from penetration and cutterhead rotations
 df['rotations [rpm]'] = utils.param_dict['cutterhead rotations']
 increment = df['Penetration [mm/rot]'] / df['rotations [rpm]'] / 1000
-df['tunnellength [m]'] = np.cumsum(increment)
+df['tunnellength [m]'] = np.round(np.cumsum(increment), 2)
 
 # generate stroke numbers
 df['Stroke number [-]'] = 0
@@ -49,7 +49,8 @@ for stroke in np.arange(n_strokes+1):
              (df['tunnellength [m]'] < (stroke+1)*utils.param_dict['stroke length'])].index
     df.loc[idx, 'Stroke number [-]'] = np.full(len(idx), stroke)
 
-# insert breaks after advance
+
+# insert stillstand after advance
 strokes = []
 for stroke in np.arange(df['Stroke number [-]'].max()):
     idx = df[df['Stroke number [-]'] == stroke].index
@@ -62,7 +63,7 @@ for stroke in np.arange(df['Stroke number [-]'].max()):
     df_stillstand_temp['Total advance force [kN]'] = np.zeros(n_dp_standstill)
     df_stillstand_temp['Torque cutterhead [MNm]'] = np.zeros(n_dp_standstill)
     df_stillstand_temp['rotations [rpm]'] = np.zeros(n_dp_standstill)
-    df_stillstand_temp['Tunnel Distance [m]'] = np.full(
+    df_stillstand_temp['tunnellength [m]'] = np.full(
         n_dp_standstill, df.loc[idx]['tunnellength [m]'].max())
     df_stillstand_temp['Stroke number [-]'] = np.full(
         n_dp_standstill, df.loc[idx]['Stroke number [-]'].max())
@@ -78,6 +79,10 @@ df['Timestamp'] = pd.date_range(start='1/1/2024', periods=len(df),
 df = df[['Timestamp', 'tunnellength [m]', 'Stroke number [-]',
          'Penetration [mm/rot]', 'Total advance force [kN]',
          'Torque cutterhead [MNm]', 'rotations [rpm]']]
+# trim to 1000 meters max
+df = df[df['tunnellength [m]'] <= 1000]
 
-# save dataframe to .csv file
-df.to_csv(f'../data/{fname}_mod.csv', index=False)
+# save dataframe to zipped .csv file
+compression_opts = dict(method='zip', archive_name=f'{fname}_mod.csv')
+df.to_csv(f'../data/{fname}_mod.zip', index=False,
+          compression=compression_opts)
