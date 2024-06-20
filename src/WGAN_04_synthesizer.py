@@ -29,7 +29,7 @@ FEATURE_NAME1 = 'pene'
 FEATURE_NAME2 = 'adv_force'
 FEATURE_NAME3 = 'torque'
 FEATURE_NAME4 = 'ucs'
-machine = 'S980'
+machine = None
 
 # filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/TBM_A_2024-06-13_15-07-47_bs32_gen426_pene_adv_force_torque_ucs_4096'
 # filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_results/TBM_C_2024-06-13_15-27-09_bs32_gen301_pene_adv_force_torque_ucs_4096'

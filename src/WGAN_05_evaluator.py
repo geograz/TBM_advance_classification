@@ -16,7 +16,7 @@ from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-tunnel = 'TBM_B' # TBM_A
+tunnel = 'TBM_B' # TBM_A # TBM_C
 FEATURE_NAME1 = 'pene'
 FEATURE_NAME2 = 'adv_force'
 FEATURE_NAME3 = 'torque'
@@ -30,7 +30,7 @@ filepath = r'C:/02_Research/01_Unterlass/01_GANs/03_GANs/06_WGAN_oenorm/01_resul
 look_back = 4096 #1024
 N_PASSES = 250
 run = 1
-machine = 'S980'
+machine = None
 
 # =============================================================================
 # load data
@@ -253,8 +253,8 @@ synth_df = pd.DataFrame({'Tunnel Distance [m]':np.arange(0, 51200, 0.05).astype(
                         'Torque cutterhead [MNm]':np.round(synth_data_torque_inv.squeeze().astype(float), 2),
                         'UCS [MPa]':np.round(synth_data_ucs_inv.squeeze().astype(float), 2)})
 
-synth_df.to_parquet(f'{filepath}/03_generated_data/synth_df_{tunnel}_{look_back}')
-real_df.to_parquet(f'{filepath}/03_generated_data/real_df_{tunnel}_{look_back}')
+synth_df.to_parquet(f'{filepath}/03_generated_data/{tunnel}_0_synthetic_raw')
+real_df.to_parquet(f'{filepath}/03_generated_data/{tunnel}_0_real_raw')
 
 ##############################################################################
 

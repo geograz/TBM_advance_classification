@@ -13,7 +13,7 @@ import pandas as pd
 
 N_VECTORS = 2500 # number of vectors of generated data
 VECTOR_LENGTH = 4096  # length of each vector
-tunnel = 'TBM_A'
+tunnel = 'TBM_A' # 'TBM_B' # TBM_C
 FEATURE_NAME1 = 'pene'
 FEATURE_NAME2 = 'adv_force'
 FEATURE_NAME3 = 'torque'
