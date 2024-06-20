@@ -25,21 +25,29 @@ SAMPLE = 'TBM_A'  # 'TBM_A' 'TBM_B' 'TBM_C'
 # instantiations
 utils = utilities(SAMPLE)
 
-# load one dataset
+# load the raw TBM dataset from a zip file
 fname = utils.param_dict['filename']
 df = pd.read_csv(f'../data/{fname}_mod.zip')
 
 ######################################
-# preprocessing
+# Basic data cleaning
 ######################################
 
 np.random.seed(123)  # fix random seed for reproducibility
 
 # remove standstills
-df_advance = df[(df['Penetration [mm/rot]'] > 0) &
-                (df['Total advance force [kN]'] > 0) &
-                (df['Torque cutterhead [MNm]'] > 0) &
+df_advance = df[(df['Penetration [mm/rot]'] > 0) |
+                (df['Total advance force [kN]'] > 0) |
+                (df['Torque cutterhead [MNm]'] > 0) |
                 (df['rotations [rpm]'] > 0)]
+
+# average datapoints with same tunnellength
+df_advance = df_advance.drop(
+    'Timestamp', axis=1).groupby('tunnellength [m]', as_index=False).mean()
+
+######################################
+# Spatial discretization
+######################################
 
 # make dataframe with stroke wise values
 df_strokes = []
@@ -48,8 +56,6 @@ for stroke in df_advance.groupby('Stroke number [-]'):
         'Stroke number [-]': [stroke[0]],
         'tunnellength stroke start [m]': [stroke[1]['tunnellength [m]'].min()],
         'tunnellength stroke end [m]': [stroke[1]['tunnellength [m]'].max()],
-        'time stroke start [m]': [stroke[1]['Timestamp'].min()],
-        'time stroke end [m]': [stroke[1]['Timestamp'].max()],
         'Penetration [mm/rot] mean': [stroke[1]['Penetration [mm/rot]'].mean()],
         'Total advance force [kN] mean': [stroke[1]['Total advance force [kN]'].mean()],
         'Torque cutterhead [MNm] mean': [stroke[1]['Torque cutterhead [MNm]'].mean()],
@@ -59,14 +65,15 @@ for stroke in df_advance.groupby('Stroke number [-]'):
         'Torque cutterhead [MNm] median': [stroke[1]['Torque cutterhead [MNm]'].median()],
         'rotations [rpm] median': [stroke[1]['rotations [rpm]'].median()]
         })
-    df_stroke_temp['tunnellength stroke middle [m]'] = df_stroke_temp[['tunnellength stroke start [m]',
-                                                                       'tunnellength stroke end [m]']].values.mean()
+    df_stroke_temp['tunnellength stroke middle [m]'] = df_stroke_temp[
+        ['tunnellength stroke start [m]',
+         'tunnellength stroke end [m]']].values.mean()
     df_strokes.append(df_stroke_temp)
 df_strokes = pd.concat(df_strokes)
 
-# average datapoints with same tunnellength
-df_advance  = df_advance.drop(
-    'Timestamp', axis=1).groupby('tunnellength [m]', as_index=False).mean()
+######################################
+# Parameter computation
+######################################
 
 # compute theoretical cutterhead torque & torque ratio for all dfs
 df['theo. torque [kNm]'], df['torque ratio [-]'] = utils.torque_ratio(
@@ -89,8 +96,16 @@ df_strokes['theo. torque [kNm] median'], df_strokes['torque ratio [-] median'] =
 df_strokes.to_excel(f'../data/{fname}_mod.xlsx', index=False)
 
 ######################################
+# Threshold definition and advance classification
+######################################
+
+# TODO
+
+######################################
 # plotting
 ######################################
+
+# TODO make dedicated script for plotting
 
 # scaling of advance force
 df['Total advance force [MN]'] = df['Total advance force [kN]'] / 1000

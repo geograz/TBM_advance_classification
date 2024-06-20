@@ -48,7 +48,6 @@ class utilities:
                                    'frequency': 10  # frequency of data recording
                                    }
 
-
     def torque_ratio(self,
                      advance_force: pd.Series,  # cutterhead advance force [kN]
                      penetration: pd.Series,  # penetration [mm/rev]
