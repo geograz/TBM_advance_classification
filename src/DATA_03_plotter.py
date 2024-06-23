@@ -121,9 +121,9 @@ for start in np.arange(1000, step=100):
                         color='orange', alpha=0.8, zorder=0)
                 # add strokes numbers
                 ax.text(x=df_strokes_.loc[i]['tunnellength stroke middle [m]'],
-                        y=ax.get_ylim()[1]-0.1,
+                        y=ax.get_ylim()[0]+0.05,
                         s='stroke\n'+str(int(df_strokes_.loc[i]['Stroke number [-]'])),
-                        ha='center', va='top', fontsize=fontsize)
+                        ha='center', va='bottom', fontsize=fontsize)
 
         # plot stroke boundaries
         boundaries = list(df_strokes_['tunnellength stroke start [m]']) + \
