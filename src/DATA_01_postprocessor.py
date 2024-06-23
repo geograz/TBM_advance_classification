@@ -27,8 +27,7 @@ utils = utilities(SAMPLE)
 
 # load one dataset
 fname = utils.param_dict['filename']
-df = pd.read_parquet(f'../data/{fname}')
-df.drop(['Tunnel Distance [m]', 'UCS [MPa]'], axis=1, inplace=True)
+df = pd.read_parquet(f'../data/{fname}_0_synthetic_raw')
 
 ######################################
 # preprocessing
@@ -84,5 +83,5 @@ df = df[df['tunnellength [m]'] <= 1000]
 
 # save dataframe to zipped .csv file
 compression_opts = dict(method='zip', archive_name=f'{fname}_mod.csv')
-df.to_csv(f'../data/{fname}_mod.zip', index=False,
+df.to_csv(f'../data/{fname}_1_synthetic_realistic.zip', index=False,
           compression=compression_opts)

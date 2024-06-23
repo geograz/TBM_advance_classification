@@ -15,35 +15,35 @@ class utilities:
         # dataset specific metadata dictionaries
         match SAMPLE:  # noqa
             case 'TBM_A':
-                self.param_dict = {'filename': 'synth_df_TBM_A_4096',
-                                   'plotname': 'sample_TBM_A',
+                self.param_dict = {'filename': 'TBM_A',
                                    'n cutters': 50,
                                    'cutter radius': 241.3,  # [mm]
-                                   'cutterhead diameter': 8,  # [m]
+                                   'cutterhead diameter': 7,  # [m]
                                    'cutterhead rotations': 6,  # [rpm]
                                    'M0': 180,  # [kNm]
+                                   'torque ratio bounds': (0.35, 0.57),
                                    'stroke length': 1.7,  # [m]
                                    'frequency': 10  # frequency of datapoint recording [s]
                                    }
             case 'TBM_B':
-                self.param_dict = {'filename': 'synth_df_TBM_B_4096',
-                                   'plotname': 'sample_TBM_B',
+                self.param_dict = {'filename': 'TBM_B',
                                    'n cutters': 70,
                                    'cutter radius': 241.3,  # [mm]
                                    'cutterhead diameter': 10,  # [m]
                                    'cutterhead rotations': 5,  # [rpm]
                                    'M0': 400,  # [kNm]
+                                   'torque ratio bounds': (0.45, 0.57),
                                    'stroke length': 1.7,  # [m]
                                    'frequency': 1  # frequency of datapoint recording [s]
                                    }
             case 'TBM_C':
-                self.param_dict = {'filename': 'synth_df_TBM_C_4096',
-                                   'plotname': 'sample_TBM_C',
+                self.param_dict = {'filename': 'TBM_C',
                                    'n cutters': 60,
                                    'cutter radius': 241.3,  # [mm]
                                    'cutterhead diameter': 9,  # [m]
                                    'cutterhead rotations': 5,  # [rpm]
                                    'M0': 220,  # [kNm]
+                                   'torque ratio bounds': (0.53, 0.63),
                                    'stroke length': 1.7,  # [m]
                                    'frequency': 10  # frequency of data recording
                                    }
