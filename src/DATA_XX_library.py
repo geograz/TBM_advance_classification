@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jun 16 11:29:38 2024
+Challenges and Opportunities of Data Driven Advance Classification for Hard
+Rock TBM excavations
 
-@author: GEr
+---- script to paper
+DOI: XXXXXXX
+
+Code contains a custom library with functions for TBM data processing.
+
+@author: Dr. Georg Erharter
 """
 
 import numpy as np

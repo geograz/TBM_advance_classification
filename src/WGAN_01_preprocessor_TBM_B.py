@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jun 13 2024
+Challenges and Opportunities of Data Driven Advance Classification for Hard
+Rock TBM excavations
 
-@author: Paul Unterlass
+---- script to paper
+DOI: XXXXXXX
 
 Preprocessing functions for the TBM_B dataset
+
+@author: Paul Unterlass
+Created on Thu Jun 13 2024
 """
 
 import numpy as np

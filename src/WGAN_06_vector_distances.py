@@ -1,7 +1,13 @@
 """
-Created on Thu Jun 13 2024
+Challenges and Opportunities of Data Driven Advance Classification for Hard
+Rock TBM excavations
 
-@author: Paul Unterlass / Georg Erharter
+---- script to paper
+DOI: XXXXXXX
+
+
+@author: Georg Erharter / Paul Unterlass
+Created on Thu Jun 13 2024
 """
 
 import matplotlib.pyplot as plt

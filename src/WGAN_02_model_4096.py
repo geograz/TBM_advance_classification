@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jun 13 2024
+Challenges and Opportunities of Data Driven Advance Classification for Hard
+Rock TBM excavations
 
-@author: Paul Unterlass
+---- script to paper
+DOI: XXXXXXX
 
 Discriminator and Generator implementation from DCGAN paper:
 Radford et.al., 2015 - Unsupervised Representation Learning with Deep
@@ -11,6 +13,8 @@ Convolutional Generative Adversarial Networks
 Removed Sigmoid() from Discriminator output (as proposed in the WGAN Paper):
 Arjovsky et.al., 2017 - Wassertein GAN
 
+@author: Paul Unterlass
+Created on Thu Jun 13 2024
 """
 
 import torch

@@ -10,7 +10,7 @@ dependencies:
 - pip
 - pytorch
 - scikit-learn
-- spyder-kernels=2.5
+- spyder-kernels=3.0
 - tqdm
 - pip:
   - pyarrow

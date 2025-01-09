@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Oct 26 21:09:10 2023
+Challenges and Opportunities of Data Driven Advance Classification for Hard
+Rock TBM excavations
 
-@author: GEr
+---- script to paper
+DOI: XXXXXXX
+
+Code processes "raw" TBM operational data according to the 4 major steps
+described in the paper.
+
+@author: Dr. Georg Erharter
 """
 
 import matplotlib.pyplot as plt

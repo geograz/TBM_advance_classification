@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jun 20 08:45:35 2024
+Challenges and Opportunities of Data Driven Advance Classification for Hard
+Rock TBM excavations
 
-@author: GEr
+---- script to paper
+DOI: XXXXXXX
+
+Code creates plots of the synthetic data for the paper.
+
+@author: Dr. Georg Erharter
 """
 
 import matplotlib.pyplot as plt
@@ -36,14 +42,18 @@ df_strokes = pd.read_excel(f'../data/{fname}_2_synthetic_strokes.xlsx')
 ######################################
 
 
-p_regular_mean = np.unique(df_strokes['advance class mean'],
-                           return_counts=True)[1][0] / len(df_strokes) * 100
-p_exceptional_mean = np.unique(df_strokes['advance class mean'],
-                               return_counts=True)[1][1] / len(df_strokes) * 100
-p_regular_median = np.unique(df_strokes['advance class median'],
-                             return_counts=True)[1][0] / len(df_strokes) * 100
-p_exceptional_median = np.unique(df_strokes['advance class median'],
-                                 return_counts=True)[1][1] / len(df_strokes) * 100
+p_regular_mean = np.unique(
+    df_strokes['advance class mean'],
+    return_counts=True)[1][0] / len(df_strokes) * 100
+p_exceptional_mean = np.unique(
+    df_strokes['advance class mean'],
+    return_counts=True)[1][1] / len(df_strokes) * 100
+p_regular_median = np.unique(
+    df_strokes['advance class median'],
+    return_counts=True)[1][0] / len(df_strokes) * 100
+p_exceptional_median = np.unique(
+    df_strokes['advance class median'],
+    return_counts=True)[1][1] / len(df_strokes) * 100
 print(SAMPLE)
 print(f'mean - regular: {round(p_regular_mean, 1)}, exceptional: {round(p_exceptional_mean, 1)}')
 print(f'median - regular: {round(p_regular_median, 1)}, exceptional: {round(p_exceptional_median, 1)}')
@@ -148,4 +158,6 @@ for start in np.arange(1000, step=100):
     plt.tight_layout()
     plt.savefig(f"../figures/{utils.param_dict['filename']}_{start}.png",
                 dpi=400)
+    plt.savefig(f"../figures/{utils.param_dict['filename']}_{start}.svg")
+    plt.savefig(f"../figures/{utils.param_dict['filename']}_{start}.pdf")
     plt.close()

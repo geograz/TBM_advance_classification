@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jun 13 2024
+Challenges and Opportunities of Data Driven Advance Classification for Hard
+Rock TBM excavations
+
+---- script to paper
+DOI: XXXXXXX
+
 
 @author: Paul Unterlass
-
-
+Created on Thu Jun 13 2024
 """
 
 from table_evaluator import TableEvaluator
