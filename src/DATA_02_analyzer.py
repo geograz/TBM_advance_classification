@@ -16,7 +16,7 @@ from DATA_XX_library import utilities
 # fixed values and variables
 ######################################
 
-SAMPLE = 'TBM_C'  # 'TBM_A' 'TBM_B' 'TBM_C'
+SAMPLE = 'TBM_B'  # 'TBM_A' 'TBM_B' 'TBM_C'
 
 ######################################
 # data import
@@ -108,3 +108,25 @@ df_strokes['advance class median'] = np.where(
 
 df_advance.to_excel(f'../data/{fname}_2_synthetic_advance.xlsx', index=False)
 df_strokes.to_excel(f'../data/{fname}_2_synthetic_strokes.xlsx', index=False)
+
+######################################
+# Print arithmetic mean and median of:
+#   - Strokes regular advance
+#   - Strokes exceptional advance
+######################################
+
+regular_advance_mean_count = df_strokes[df_strokes['advance class mean'] == 0].shape[0]
+exceptional_advance_mean_count = df_strokes[df_strokes['advance class mean'] == 1].shape[0]
+
+regular_advance_median_count = df_strokes[df_strokes['advance class median'] == 0].shape[0]
+exceptional_advance_median_count = df_strokes[df_strokes['advance class median'] == 1].shape[0]
+
+print('Regular advance:')
+print(f"Arithmetic mean of strokes: {regular_advance_mean_count}")
+print(f"Median of strokes: {regular_advance_median_count}")
+print ('')
+print ('Exceptional advance:')
+print(f"Arithmetic mean of strokes: {exceptional_advance_mean_count}")
+print(f"Median of strokes: {exceptional_advance_median_count}")
+
+
