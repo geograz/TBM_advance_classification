@@ -9,10 +9,9 @@ DOI: XXXXXXX
 Code processes "raw" TBM operational data according to the 4 major steps
 described in the paper.
 
-@author: Dr. Georg Erharter
+@author: Dr. Georg Erharter, Theresa Maier
 """
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -117,23 +116,27 @@ df_advance.to_excel(f'../data/{fname}_2_synthetic_advance.xlsx', index=False)
 df_strokes.to_excel(f'../data/{fname}_2_synthetic_strokes.xlsx', index=False)
 
 ######################################
-# Print arithmetic mean and median of:
+# Print number of strokes achieved with arithmetic mean and median:
 #   - Strokes regular advance
 #   - Strokes exceptional advance
 ######################################
 
-regular_advance_mean_count = df_strokes[df_strokes['advance class mean'] == 0].shape[0]
-exceptional_advance_mean_count = df_strokes[df_strokes['advance class mean'] == 1].shape[0]
+n_strokes = len(df_strokes)
+n_regular_advance_mean = df_strokes[df_strokes['advance class mean'] == 0].shape[0]
+n_exceptional_advance_mean = df_strokes[df_strokes['advance class mean'] == 1].shape[0]
+ratio_mean_regular = round(n_regular_advance_mean/n_strokes*100, 1)
+ratio_mean_exceptional = round(n_exceptional_advance_mean/n_strokes*100, 1)
 
-regular_advance_median_count = df_strokes[df_strokes['advance class median'] == 0].shape[0]
-exceptional_advance_median_count = df_strokes[df_strokes['advance class median'] == 1].shape[0]
+n_regular_advance_median = df_strokes[df_strokes['advance class median'] == 0].shape[0]
+n_exceptional_advance_median = df_strokes[df_strokes['advance class median'] == 1].shape[0]
+ratio_median_regular = round(n_regular_advance_median/n_strokes*100, 1)
+ratio_median_exceptional = round(n_exceptional_advance_median/n_strokes*100, 1)
 
-print('Regular advance:')
-print(f"Arithmetic mean of strokes: {regular_advance_mean_count}")
-print(f"Median of strokes: {regular_advance_median_count}")
-print ('')
-print ('Exceptional advance:')
-print(f"Arithmetic mean of strokes: {exceptional_advance_mean_count}")
-print(f"Median of strokes: {exceptional_advance_median_count}")
-
-
+print(f'{SAMPLE} Regular advance:')
+print(f"n strokes based on arithmetic mean: {n_regular_advance_mean}")
+print(f"n strokes based on median: {n_regular_advance_median}\n")
+print(f'{SAMPLE} Exceptional advance:')
+print(f"n strokes based on arithmetic mean: {n_exceptional_advance_mean}")
+print(f"n strokes based on median: {n_exceptional_advance_median}\n")
+print(f'ratio regular/exceptional based on arithmetic mean [%]: {ratio_mean_regular}/{ratio_mean_exceptional}')
+print(f'ratio regular/exceptional based on median [%]: {ratio_median_regular}/{ratio_median_exceptional}')
