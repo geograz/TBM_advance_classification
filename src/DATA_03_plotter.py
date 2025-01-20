@@ -22,7 +22,7 @@ from DATA_XX_library import utilities
 # fixed values and variables
 ######################################
 
-SAMPLE = 'TBM_C'  # 'TBM_A' 'TBM_B' 'TBM_C'
+SAMPLE = 'TBM_A'  # 'TBM_A' 'TBM_B' 'TBM_C'
 
 ######################################
 # data import
