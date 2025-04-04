@@ -1,5 +1,5 @@
 # TBM_advance_classification
-Code and data repository for the paper **Challenges and Opportunities of Data Driven Advance Classification of Hard Rock TBMs** by Georg H. Erharter<sup>1</sup>, Paul Unterlaß<sup>2</sup>, Nedim Radončić<sup>3</sup>, Thomas Marcher<sup>2</sup>, Jamal Rostami<sup>4</sup>
+Code and data repository for the paper **Challenges and Opportunities of Data-Driven Advance Classification for Hard Rock TBM excavations** by Georg H. Erharter<sup>1</sup>, Paul Unterlaß<sup>2</sup>, Nedim Radončić<sup>3</sup>, Thomas Marcher<sup>2</sup>, Jamal Rostami<sup>4</sup>
 
 1)	Norwegian Geotechnical Institute, Sandakerveien 140, Oslo, Norway
 2)	Institute of Rock Mechanics and Tunnelling, Graz University of Technology, Rechbauerstraße 12, Graz, Austria
@@ -7,7 +7,9 @@ Code and data repository for the paper **Challenges and Opportunities of Data Dr
 4)	Colorado School of Mines, 1500 Illinois St, Golden, Colorado, United States of America
 * correspondence: georg.erharter@ngi.no
 
-The paper is currently in the review phase.
+[Link to the published paper](https://link.springer.com/article/10.1007/s00603-025-04542-4?utm_source=rct_congratemailt&utm_medium=email&utm_campaign=oa_20250403&utm_content=10.1007%2Fs00603-025-04542-4).
+
+DOI: https://doi.org/10.1007/s00603-025-04542-4
 
 Code authors: Georg H. Erharter, Paul Unterlaß & Theresa Maier
 
